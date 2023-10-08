@@ -8,13 +8,14 @@ from monitor.monitor import Monitor
 from monitor.policy import MultiProcessPolicy, SimplePolicy, CompositePolicy, AlwaysPolicy, IsDeadPolicy
 from monitor.status import Status
 from monitor.actions import log, kill
+import numpy as np
 
 def test():
     temp = []
     
     while True:
-        temp += [0] * 10000000
-        time.sleep(1)
+        temp += [0]
+        # time.sleep(1)
 
 def died_reaction(status):
     monitor.remove_process(status.pid)

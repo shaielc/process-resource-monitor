@@ -3,6 +3,15 @@ A class the contains a sample of the status of the process.
 """
 import psutil
 
+def size_human_format(num):
+    if num is None:
+        return 
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    return '{}{}'.format('{:.2f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
+
 class Status:
     """
     The process status
@@ -33,7 +42,7 @@ class Status:
         if not self.alive:
             return
         self.memory = process.memory_info().rss
-        self.cpu = process.cpu_percent()
+        self.cpu = process.cpu_percent(1)
     
     def is_alive(self,):
         """
@@ -42,4 +51,4 @@ class Status:
         return self.alive
     
     def __str__(self) -> str:
-        return f"PID: {self.pid} | Name: {self.name} | Alive: {self.alive} | MEM: {self.memory} | CPU: {str(self.cpu) + '%' if self.cpu is not None else None} | STATUS: {self.status_code}"
+        return f"PID: {self.pid} | Name: {self.name} | Alive: {self.alive} | MEM: {size_human_format(self.memory)} | CPU: {str(self.cpu) + '%' if self.cpu is not None else None} | STATUS: {self.status_code}"
